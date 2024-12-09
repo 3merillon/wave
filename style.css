@@ -1,0 +1,505 @@
+:root {
+  --background-color: #fff;
+  --text-color: #000;
+  --primary-color: #007BFF;
+  --secondary-color: #f8f8f8;
+  --border-color: #ddd;
+  --control-bg-color: #e0e0e0;
+  --control-hover-bg-color: #d0d0d0;
+  --control-disabled-opacity: 0.5;
+  --play-color: #4CAF50; /* Green */
+  --pause-color: #FF4444; /* Red */
+  --icon-color: #000;
+  --svg-stroke-color: #000;
+}
+
+body.dark {
+  --background-color: #000;
+  --text-color: #fff;
+  --primary-color: #007BFF;
+  --secondary-color: #333;
+  --border-color: #555;
+  --control-bg-color: #555;
+  --control-hover-bg-color: #666;
+  --control-disabled-opacity: 0.5;
+  --play-color: #4CAF50; /* Green */
+  --pause-color: #FF4444; /* Red */
+  --icon-color: #fff;
+  --svg-stroke-color: #fff;
+}
+
+/* General Styles */
+body {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  background: var(--secondary-color);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 840px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Info Section */
+.info-section {
+  display: flex;
+  align-items: flex-start; /* Align to the top */
+  margin-bottom: 20px;
+}
+
+#infoButton, #themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  margin-right: 10px;
+  color: var(--icon-color);
+}
+
+#infoButton:hover, #themeToggle:hover {
+  color: var(--primary-color);
+}
+
+#infoButton.active {
+  color: var(--primary-color);
+}
+
+#infoContent {
+  padding: 0 10px;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  margin-top: 13px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+  font-style: italic;
+}
+
+#infoContent.collapsed {
+  max-height: 0;
+}
+
+/* Top Controls */
+.top-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--background-color);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.frequency-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.frequency-input input {
+  padding: 8px;
+  width: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.playback-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.control-btn {
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  width: 50px;
+  height: 33px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--control-bg-color);
+  color: var(--text-color);
+}
+
+.control-btn:hover:not(:disabled) {
+  background-color: var(--control-hover-bg-color);
+}
+
+.control-btn:disabled {
+  opacity: var(--control-disabled-opacity);
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.control-btn.active {
+  background-color: var(--control-active-bg-color);
+}
+
+#playBtn {
+  color: var(--play-color);
+  border-color: var(--play-color);
+}
+
+#pauseBtn {
+  color: var(--pause-color);
+  border-color: var(--pause-color);
+}
+
+/* Beatbox */
+.beatbox {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.beatbox h3 {
+  margin: 0 0 10px 0;
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voices-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 65px;
+  padding: 15px;
+  background: var(--secondary-color);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.voice {
+  position: relative;
+  padding: 8px 30px 8px 12px;
+  background: var(--control-bg-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.voice .controls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.voice .up-arrow,
+.voice .down-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 2px;
+  color: var(--icon-color);
+}
+
+.voice .up-arrow:hover,
+.voice .down-arrow:hover {
+  color: var(--primary-color);
+}
+
+.voice .fraction-container {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.voice .numerator,
+.voice .denominator {
+  display: block;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.voice .fraction-line {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background-color: var(--text-color);
+  margin: 2px auto;
+}
+
+.voice .fraction-container:hover .numerator,
+.voice .fraction-container:hover .denominator {
+  color: var (--primary-color);
+}
+
+.voice .fraction-container:hover .fraction-line {
+  background-color: var(--primary-color);
+}
+
+.voice .fraction-container:hover {
+  border: 1px solid var(--primary-color);
+}
+
+.voice .remove {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-color);
+  padding: 2px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.voice .remove:hover {
+  color: #ff4444;
+}
+
+#waveContainer {
+  width: 100%;
+  height: auto;
+  background: var(--background-color);
+  margin: 20px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+#wavePath {
+  stroke: var(--svg-stroke-color);
+}
+
+/* Controls */
+.controls {
+  padding: 15px;
+  background: var(--background-color);
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+/* Order Header */
+.order-header {
+  cursor: pointer;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+}
+
+.order-header:hover {
+  color: var(--primary-color);
+}
+
+.toggle-icon {
+  margin-right: 5px;
+  font-size: 14px;
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+}
+
+.header-line {
+  display: none; /* Hide the additional top border */
+}
+
+.order-content {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out, border-width 0.3s ease-out;
+  background: var(--secondary-color);
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.order-content.collapsed {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+}
+
+/* Level Styles */
+.level {
+  width: 100%;
+  height: 60px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.level .fraction-button,
+.level .placeholder {
+  position: absolute;
+}
+
+.fraction-button {
+  transform: translateX(-50%);
+  background: var(--control-bg-color);
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  padding: 2px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.fraction-button .fraction-container {
+  display: inline-block;
+  text-align: center;
+}
+
+.fraction-button .numerator,
+.fraction-button .denominator {
+  display: block;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.fraction-button .fraction-line {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background-color: var(--text-color);
+  margin: 2px auto;
+}
+
+.fraction-button:hover .numerator,
+.fraction-button:hover .denominator {
+  color: var(--primary-color);
+}
+
+.fraction-button:hover .fraction-line {
+  background-color: var(--primary-color);
+}
+
+.fraction-button:hover {
+  border: 1px solid var(--primary-color);
+}
+
+.fraction-button:focus {
+  outline: none;
+}
+
+/* Placeholder (vertical grey bar) */
+.placeholder {
+  width: 1px;
+  height: 60px;
+  background: var(--border-color);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Fraction Dialog */
+.fraction-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.fraction-dialog .dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fraction-dialog label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.fraction-dialog input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.fraction-dialog button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fraction-dialog button#dialogSave {
+  background: var(--primary-color);
+  color: var(--text-color);
+}
+
+.fraction-dialog button#dialogCancel {
+  background: #f44336;
+  color: #fff;
+}
+
+/* Resizable Footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 33vh;
+  background: var(--secondary-color);
+  border-top: 1px solid var(--border-color);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.resize-handle {
+  width: 100%;
+  height: 20px;
+  cursor: ns-resize;
+  background: var(--border-color);
+  position: fixed;
+  bottom: 33vh;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resize-handle::before {
+  content: '';
+  width: 50px;
+  height: 10px;
+  background: var(--text-color);
+  border-radius: 5px;
+}
+
+.no-scroll {
+  overflow: hidden;
+}

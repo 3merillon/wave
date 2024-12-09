@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[RMT] wave harmonics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="info-section" >
+      <button id="infoButton" aria-label="Information"><i class="fas fa-info-circle"></i></button>
+      <button id="themeToggle" aria-label="Toggle Theme"><i class="fas fa-adjust"></i></button>
+      <div id="infoContent" class="hidden collapsed">
+        <p style="text-align: center;"><strong>Unleash Your Creativity with Relative Music Theory (RMT)</strong></p>
+        <p>Dive into the fascinating world of harmonics and create your own unique harmonies with our innovative tool.</p><p>Add fractions representing natural harmonics to the Active Voices, and press play to experience the mesmerizing blend of sounds.</p><p>Customize your harmonies by shifting voices up or down an octave, or fine-tune them by modifying the fractions.</p><p>Whether you're a music enthusiast or a professional, this tool allows you to create unheard of harmonies.</p>
+        <hr>
+        <p style="text-align: center;">read the original <b>RMT</b> article : <a href="https://cybercyril.com" target="_blank">https://cybercyril.com</a>.</p>
+        <hr>
+        <p style="text-align: center;">donate :</p>
+        <p style="text-align: center;"><a href="https://donate.stripe.com/7sIdR3dQMciZb1m8ww" target="_blank"><i class="fab fa-stripe fa-3x"></i></a></p>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <div class="frequency-input">
+        <label for="baseFreq"><strong>freq(Hz):</strong></label>
+        <input type="number" id="baseFreq" value="442" min="20" max="2000">
+      </div>
+
+      <div class="playback-controls">
+        <button id="playBtn" class="control-btn" aria-label="Play" tabindex="0"><i class="fas fa-play"></i></button>
+        <button id="pauseBtn" class="control-btn" aria-label="Pause" disabled tabindex="0"><i class="fas fa-pause"></i></button>
+      </div>
+    </div>
+
+    <div class="beatbox">
+      <h3>Active Voices <span id="voiceCount">(0)</span></h3>
+      <div id="activeVoices" class="voices-container"></div>
+    </div>
+
+    <svg id="waveContainer" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid meet">
+      <path id="wavePath" stroke="black" fill="none" stroke-width="2"/>
+    </svg>
+  </div><br></br>
+
+  <div id="spacer"></div>
+
+  <div class="resize-handle"></div>
+  <div class="footer">
+    <div class="controls">
+      <!-- Controls will be dynamically generated -->
+    </div>
+  </div>
+
+  <script src="audio.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
