@@ -405,24 +405,33 @@ class WaveAnimation {
     const fractionContainer = voiceElement.querySelector('.fraction-container');
     let numerator = parseInt(fractionContainer.querySelector('.numerator').textContent);
     let denominator = parseInt(fractionContainer.querySelector('.denominator').textContent);
-
+  
     if (direction === 'up') {
       numerator *= 2;
     } else if (direction === 'down') {
       denominator *= 2;
     }
-
+  
     const simplified = this.simplifyFraction(numerator, denominator);
-
+  
     fractionContainer.querySelector('.numerator').textContent = simplified.numerator;
     fractionContainer.querySelector('.denominator').textContent = simplified.denominator;
-
+  
     // Update the ratio in the dataset
     voiceElement.dataset.ratio = `${simplified.numerator}/${simplified.denominator}`;
-
+  
     // Update the audio manager
     const voiceId = voiceElement.dataset.voiceId;
     this.audioManager.updateVoice(voiceId, simplified.numerator, simplified.denominator, this.baseFreqInput.value);
+  
+    // Update the activeVoices array
+    const voiceIndex = this.activeVoices.findIndex(v => v.voiceId == voiceId);
+    if (voiceIndex !== -1) {
+      this.activeVoices[voiceIndex].ratio = `${simplified.numerator}/${simplified.denominator}`;
+    }
+  
+    // Ensure the animation updates
+    this.path.setAttribute('d', `M ${this.calculateWavePoints(0)}`);
   }
 
   simplifyFraction(numerator, denominator) {
@@ -436,14 +445,14 @@ class WaveAnimation {
 
   openFractionDialog(voiceElement) {
     if (this.dialogOpen) return; // Prevent opening multiple dialogs
-
+  
     const fractionContainer = voiceElement.querySelector('.fraction-container');
     const numerator = fractionContainer.querySelector('.numerator').textContent;
     const denominator = fractionContainer.querySelector('.denominator').textContent;
-
+  
     const dialog = document.createElement('div');
     dialog.className = 'fraction-dialog';
-
+  
     dialog.innerHTML = `
       <div class="dialog-content">
         <label>Numerator: <input type="number" id="dialogNumerator" value="${numerator}"></label>
@@ -452,44 +461,53 @@ class WaveAnimation {
         <button id="dialogCancel">Cancel</button>
       </div>
     `;
-
+  
     document.body.appendChild(dialog);
     this.dialogOpen = true;
-
+  
     const closeDialog = () => {
       dialog.remove();
       this.dialogOpen = false;
       document.removeEventListener('click', handleOutsideClick);
     };
-
+  
     const handleOutsideClick = (event) => {
       if (!dialog.contains(event.target) && event.target !== fractionContainer) {
         closeDialog();
       }
     };
-
+  
     document.getElementById('dialogSave').addEventListener('click', () => {
       const newNumerator = parseInt(document.getElementById('dialogNumerator').value);
       const newDenominator = parseInt(document.getElementById('dialogDenominator').value);
       const simplified = this.simplifyFraction(newNumerator, newDenominator);
-
+  
       fractionContainer.querySelector('.numerator').textContent = simplified.numerator;
       fractionContainer.querySelector('.denominator').textContent = simplified.denominator;
-
+  
       // Update the ratio in the dataset
       voiceElement.dataset.ratio = `${simplified.numerator}/${simplified.denominator}`;
-
+  
       // Update the audio manager
       const voiceId = voiceElement.dataset.voiceId;
       this.audioManager.updateVoice(voiceId, simplified.numerator, simplified.denominator, this.baseFreqInput.value);
-
+  
+      // Update the activeVoices array
+      const voiceIndex = this.activeVoices.findIndex(v => v.voiceId == voiceId);
+      if (voiceIndex !== -1) {
+        this.activeVoices[voiceIndex].ratio = `${simplified.numerator}/${simplified.denominator}`;
+      }
+  
+      // Ensure the animation updates
+      this.path.setAttribute('d', `M ${this.calculateWavePoints(0)}`);
+  
       closeDialog();
     });
-
+  
     document.getElementById('dialogCancel').addEventListener('click', () => {
       closeDialog();
     });
-
+  
     // Add event listener to close dialog when clicking outside
     setTimeout(() => {
       document.addEventListener('click', handleOutsideClick);
